@@ -36,7 +36,7 @@ namespace App
             return true;
         }
 
-        public static double getExp(double phi, double[] posExp) {
+        public static double getOpenExp(double phi, double[] posExp) {
             int i = 0;
             double m;
             do {
@@ -47,11 +47,16 @@ namespace App
             return posExp[i - 1];
         }
 
-        public static double getD(double phi, double exp) {
+        public static double getCloseExp(double phi, double exp) {
             double d;
             int x = 1;
-            d = (1 + x * phi) / exp
-            while ((1 + x * phi) / exp) % Math.Floor((1 + x * phi) / exp)) == 0)
+            d = (1 + x * phi) / exp;
+            while (d % Math.Floor(d) != 0) 
+            {
+                d = (1 + x * phi) / exp;
+                x++;
+            }
+            return d;
         }
     }
 }
