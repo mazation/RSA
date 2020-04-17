@@ -15,7 +15,15 @@ namespace App
             Console.WriteLine("cipher путь_к_исходному_файлу");
             Console.WriteLine("Для того, чтобы зашифровать введите:");
             Console.WriteLine("decipher путь_к_зашифрованному_файлу путь_к_private_key");
-            string message = Console.ReadLine();
+
+            while (true) {
+                string message = Console.ReadLine();
+                body(message);
+            }
+         
+        }
+
+        public static void body(string message) {
             string[] messageSplit = message.Split(' ');
             if (messageSplit[0] == "cipher" && messageSplit[1] != null)
             {
@@ -33,12 +41,14 @@ namespace App
                         wr1.Close();
                     }
                 }
-                catch (IOException e) {
+                catch (IOException e)
+                {
                     Console.WriteLine("При чтении файла возникла ошибка:");
                     Console.WriteLine(e);
                 }
-        }
-            if (messageSplit[0] == "decipher" && messageSplit[1] != null && messageSplit[2] != null) {
+            }
+            else if (messageSplit[0] == "decipher" && messageSplit[1] != null && messageSplit[2] != null)
+            {
                 StreamReader f1 = new StreamReader(messageSplit[1]);
                 string messageToDecipher = f1.ReadToEnd();
                 f1.Close();
@@ -54,8 +64,9 @@ namespace App
                 wr.Write(decipheredMessage);
                 wr.Close();
             }
-            Console.ReadLine();
-         
+            else {
+                Console.WriteLine("Команда не найдена");
+            }
         }
     }
 }

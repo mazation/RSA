@@ -10,9 +10,9 @@ namespace App
     {
         public static double getPrime() {
             double num = generateNum();
-            do {
-                num += 1;
-            } while (!isPrime(num));
+            while (!isPrime(num)) {
+                num++;
+            }
             return num;
         }
 
@@ -24,7 +24,7 @@ namespace App
         }
 
         protected static bool isPrime(double num) {
-            for (int i = 2; i < Math.Sqrt(num); i++) {
+            for (int i = 2; i < num/2; i++) {
                 if (num % i == 0)
                 {
                     return false;
@@ -34,11 +34,9 @@ namespace App
         }
 
         public static double getOpenExp(double phi) {
-            int i = 19;
-            double m = 19;
-            while (phi % i == 0) {
-                m = i;
-                i++;
+            double m = 3;
+            while (phi % m == 0) {
+                m++;
             }
             return m;
         }
@@ -49,8 +47,8 @@ namespace App
             d = (1 + x * phi) / exp;
             while (d % Math.Floor(d) != 0) 
             {
-                d = (1 + x * phi) / exp;
                 x++;
+                d = (1 + x * phi) / exp;
             }
             return d;
         }
