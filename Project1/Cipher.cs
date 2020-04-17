@@ -80,13 +80,10 @@ namespace App
                 {
                     decipheredMessage += Convert.ToChar(Convert.ToInt64(num));
                 }
-
             } catch (Exception e) {
                 Console.WriteLine("Во время дешифрования произошла ошибка:");
                 Console.WriteLine(e);
-            }
-
-            
+            }            
             Console.WriteLine("Дешифрование завершено");
             return decipheredMessage;
         }
