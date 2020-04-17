@@ -23,15 +23,18 @@ namespace App
             phi = (p - 1) * (q - 1);
             publicKey = getPublicKey();
             privateKey = getPrivateKey(publicKey[1]);
+            savePublicKey();
             savePrivateKey();
         }
         public double[] getPublicKey()
         {
+            Console.WriteLine("Создание публичного ключа");
             double[] publicKey = new double[2];
 
-            double openExp = Calculation.getOpenExp(phi, possibleExp);
+            double openExp = Calculation.getOpenExp(phi);
             publicKey[0] = n;
             publicKey[1] = openExp;
+            Console.WriteLine("Создание публичного ключа завершено");
             return publicKey;
         }
 
@@ -49,7 +52,12 @@ namespace App
             byte[] textBytes = Encoding.ASCII.GetBytes(message);
             string encodedText = "";
             foreach (byte i in textBytes) {
-                double c = Math.Pow(i, openExp) % n;
+                Console.WriteLine(i);
+                
+                double c = (Math.Pow(i, openExp)) % n;
+                Console.WriteLine(Math.Pow(2, 100) % 3);
+                //Console.WriteLine(c);
+                //Console.WriteLine(n);
                 string m = c.ToString() + '-';
                 encodedText += m;
             }
@@ -63,10 +71,10 @@ namespace App
             foreach (string msg in messageArray) {
                 if (msg != "") {
                     double deciperedNum = Convert.ToDouble(msg);
-                    Console.WriteLine(deciperedNum);
-                    Console.WriteLine(privateKey[1]);
-                    Console.WriteLine(privateKey[0]);
-                    //Console.WriteLine(Math.Pow(deciperedNum, privateKey[1]) % privateKey[0]);
+                    //Console.WriteLine(deciperedNum);
+                    //Console.WriteLine(privateKey[1]);
+                    //Console.WriteLine(privateKey[0]);
+                    Console.WriteLine(Math.Pow(deciperedNum, privateKey[1]) % privateKey[0]);
                     messageArrayDecihered.Add(Math.Pow(deciperedNum, privateKey[1]) % privateKey[0]);
                     //decimal power = 1;
                     //for (int i = 0; i < privateKey[1]; i++) {
@@ -76,8 +84,8 @@ namespace App
                 }
             }
             foreach (double num in messageArrayDecihered) {
-                decipheredMessage += Convert.ToString(num);
-                Console.WriteLine(Convert.ToString(num));
+                decipheredMessage += Convert.ToChar(Convert.ToInt32(num));
+                //Console.WriteLine(Convert.ToChar(num));
             }
             return decipheredMessage;
         }
@@ -85,8 +93,17 @@ namespace App
         public void savePrivateKey() {
             using (StreamWriter w = new StreamWriter("privateKey.txt", false, Encoding.GetEncoding(0)))
             {
-                w.WriteLine(privateKey[1]);
                 w.WriteLine(privateKey[0]);
+                w.WriteLine(privateKey[1]);
+            }
+        }
+
+        public void savePublicKey() {
+            using (StreamWriter w = new StreamWriter("publicKey.txt", false, Encoding.GetEncoding(0)))
+            {
+                w.WriteLine(publicKey[0]);
+                w.WriteLine(publicKey[1]);
+                w.WriteLine(phi);
             }
         }
     }

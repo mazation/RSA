@@ -33,15 +33,14 @@ namespace App
             return true;
         }
 
-        public static double getOpenExp(double phi, double[] posExp) {
-            int i = 0;
-            double m;
-            do {
-                m = phi % posExp[i];
+        public static double getOpenExp(double phi) {
+            int i = 19;
+            double m = 19;
+            while (phi % i == 0) {
+                m = i;
                 i++;
-            } while (m == 0);
-
-            return posExp[i - 1];
+            }
+            return m;
         }
 
         public static double getCloseExp(double phi, double exp) {
