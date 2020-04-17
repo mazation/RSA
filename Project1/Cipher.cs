@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,12 +17,13 @@ namespace App
 
         public Cipher()
         {
-            p = Calculation.generateNum();
-            q = Calculation.generateNum();
+            p = Calculation.getPrime();
+            q = Calculation.getPrime();
             n = p * q;
             phi = (p - 1) * (q - 1);
-            publicKey = this.getPublicKey();
-            privateKey = this.getPrivateKey(publicKey[1]);
+            publicKey = getPublicKey();
+            privateKey = getPrivateKey(publicKey[1]);
+            savePrivateKey();
         }
         public double[] getPublicKey()
         {
@@ -44,7 +46,6 @@ namespace App
         public string cipher(string message)
         {
             double openExp = publicKey[1];
-            //double[] privateKey = this.getPrivateKey(openExp);
             byte[] textBytes = Encoding.ASCII.GetBytes(message);
             string encodedText = "";
             foreach (byte i in textBytes) {
@@ -56,8 +57,37 @@ namespace App
         }
 
         public static string decipher(string message, double[] privateKey) {
-            string v = "Kek";
-            return v;
+            string[] messageArray = message.Split('-');
+            List<double> messageArrayDecihered = new List<double>();
+            string decipheredMessage = "";
+            foreach (string msg in messageArray) {
+                if (msg != "") {
+                    double deciperedNum = Convert.ToDouble(msg);
+                    Console.WriteLine(deciperedNum);
+                    Console.WriteLine(privateKey[1]);
+                    Console.WriteLine(privateKey[0]);
+                    //Console.WriteLine(Math.Pow(deciperedNum, privateKey[1]) % privateKey[0]);
+                    messageArrayDecihered.Add(Math.Pow(deciperedNum, privateKey[1]) % privateKey[0]);
+                    //decimal power = 1;
+                    //for (int i = 0; i < privateKey[1]; i++) {
+                      //  power *= deciperedNum;
+                    //}
+                    //messageArrayDecihered.Add(power % Convert.ToDecimal(privateKey[0]));
+                }
+            }
+            foreach (double num in messageArrayDecihered) {
+                decipheredMessage += Convert.ToString(num);
+                Console.WriteLine(Convert.ToString(num));
+            }
+            return decipheredMessage;
+        }
+
+        public void savePrivateKey() {
+            using (StreamWriter w = new StreamWriter("privateKey.txt", false, Encoding.GetEncoding(0)))
+            {
+                w.WriteLine(privateKey[1]);
+                w.WriteLine(privateKey[0]);
+            }
         }
     }
 }

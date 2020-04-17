@@ -19,10 +19,7 @@ namespace App
         public static double generateNum() {
             double num;
             Random rnd = new Random();
-            double n = rnd.Next(30, 33);
-            double m = rnd.Next((int)Math.Pow(2, 20));
-            num = Math.Pow(2, n);
-            num += m;
+            num = rnd.Next((int)Math.Pow(2, 6));
             return num;
         }
 

@@ -19,20 +19,41 @@ namespace App
             string[] messageSplit = message.Split(' ');
             if (messageSplit[0] == "cipher" && messageSplit[1] != null)
             {
+                string messageToCipher;
                 try
                 {
                     using (StreamReader sr = new StreamReader(messageSplit[1]))
                     {
-                        String line = sr.ReadToEnd();
+                        string line = sr.ReadToEnd();
                         Cipher cipher = new Cipher();
+                        messageToCipher = cipher.cipher(line);
+
+                        StreamWriter wr1 = new StreamWriter("ciphered.txt", false, Encoding.GetEncoding(0));
+                        wr1.Write(messageToCipher);
+                        wr1.Close();
                     }
                 }
                 catch (IOException e) {
                     Console.WriteLine("При чтении файла возникла ошибка:");
                     Console.WriteLine(e);
                 }
-                }
-            string path = Directory.GetCurrentDirectory();
+        }
+            if (messageSplit[0] == "decipher" && messageSplit[1] != null && messageSplit[2] != null) {
+                StreamReader f1 = new StreamReader(messageSplit[1]);
+                string messageToDecipher = f1.ReadToEnd();
+                f1.Close();
+                double[] privateKey = new double[2];
+                StreamReader f2 = new StreamReader(messageSplit[2]);
+                string st1 = f2.ReadLine();
+                string st2 = f2.ReadLine();
+                f2.Close();
+                privateKey[0] = Convert.ToDouble(st1);
+                privateKey[1] = Convert.ToDouble(st2);
+                string decipheredMessage = Cipher.decipher(messageToDecipher, privateKey);
+                StreamWriter wr = new StreamWriter("message.txt", false, Encoding.GetEncoding(0));
+                wr.Write(decipheredMessage);
+                wr.Close();
+            }
             Console.ReadLine();
          
         }
